@@ -8,6 +8,8 @@ E-Commerce Microservices Application - Kubernetes Deployment
 
 This is a production-ready, cloud-native E-commerce platform built using a microservices architecture. The application simulates a real-world freelancing or services marketplace (similar to Fiverr) and is deployed on Amazon EKS with full observability, scaling, and security mechanisms in place.
 
+![Live App](screenshots/jobber-app.png)
+
 ### 🧱 Core Components
 
 | Layer         | Component                       | Technology                   |
