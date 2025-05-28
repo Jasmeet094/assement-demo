@@ -13,7 +13,7 @@
 9. [Login to Grafana](#login-to-grafana)
 10. [Adding Loki to Grafana](#adding-loki-to-grafana)
 11. [Login to Kibana(Elasticsearch)](#login-to-kibanaelasticsearch)
-12. [Network Policies for Service-Level Security](#-network-policies-for-service-level-security)
+12. [Network Policies for Service-Level Security](#-Applied Network Policies)
 
 E-Commerce Microservices Application - Kubernetes Deployment
 
