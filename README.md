@@ -247,6 +247,7 @@ While system logs are centralized in Loki, the application logs and metrics are 
 kubectl get secret grafana -n production -o jsonpath="{.data.admin-password}" | base64 --decode && echo
 
 ```
+![Grafana Monitoring](screenshots/grafana.png)
 
 * Now access **https://grafana.jasmeet-devops.shop**  and Use the Username **admin** and **password from above command**
 
@@ -263,8 +264,11 @@ kubectl get secret grafana -n production -o jsonpath="{.data.admin-password}" | 
 ** and click on save&test. 
 * Go to Explor and click on label Browser and selct any pod to view logs.
 
+![Loki Logs Monitoring](screenshots/loki.png)
 
 #### Login to Kibana(Elasticsearch):
 * Access URL https://kibana.jasmeet-devops.shop  and Use username **elastic** and password.
 * Here we can see the metrics for app and infrastructure
 * In this setup the elasticsearch is howing only 2 hosts metrics this is because currently the agen metricbeat is running on only Karpenter Main node-class nodes.
+
+![Elasticsearch Monitoring](screenshots/elasticsearch.png)
