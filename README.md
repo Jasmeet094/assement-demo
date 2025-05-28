@@ -1,6 +1,18 @@
 
 ## Atlan - Assesment E-commerce App on AWS EKS:
 
+## 📚 Table of Contents
+1. [Overview](#atlan---assesment-e-commerce-app-on-aws-eks)
+2. [Application Architecture](#-core-components)
+3. [Infrastructure Deployment (Terraform)](#infrastructure-deployment-using-terraform)
+4. [Terraform Structure with Remote State and Module Reuse](#terraform-structure-with-remote-state-and-module-reuse)
+5. [Why Karpenter Was Used](#-cluster-autoscaler---why-karpenter-was-used-)
+6. [Deploy Resources Related to App](#deploy-resources-related-to-app)
+7. [Accessing the App](#accessing-the-app)
+8. [Observability in EKS Cluster](#observability-in-eks-cluster)
+9. [Login to Grafana](#login-to-grafana)
+10. [Adding Loki to Grafana](#adding-loki-to-grafana)
+11. [Login to Kibana(Elasticsearch)](#login-to-kibanaelasticsearch)
 
 E-Commerce Microservices Application - Kubernetes Deployment
 
@@ -131,7 +143,7 @@ eksctl create iamserviceaccount \
 
 ```
 
-#### 3. After setting up Secrets ans Service Accounts lets Start Deploying Resources in below order:
+#### 3. After setting up Secrets and Service Accounts lets Start Deploying Resources in below order:
 * Go to folder jobber-k8s.
 
 ```
@@ -203,7 +215,7 @@ In this project, Ingress resources are configured to:
 
 * Uses a specific health check path (/api/status) to pass ALB health checks.
 
-* Isolated to prevent conflict with other services sharing default port 80.
+* Isolated to prevent conflict with other services healtj checks.
 
 #### App Services (e.g., frontend, backend APIs) use a dedicated Ingress:
 
@@ -271,6 +283,6 @@ kubectl get secret grafana -n production -o jsonpath="{.data.admin-password}" | 
 #### Login to Kibana(Elasticsearch):
 * Access URL https://kibana.jasmeet-devops.shop  and Use username **elastic** and password.
 * Here we can see the metrics for app and infrastructure
-* In this setup the elasticsearch is howing only 2 hosts metrics this is because currently the agen metricbeat is running on only Karpenter Main node-class nodes.
+* In this setup the elasticsearch is showing only 2 hosts metrics this is because currently the agent metricbeat is running on only Karpenter Main node-class nodes.
 
 ![Elasticsearch Monitoring](screenshots/elasticsearch.png)
