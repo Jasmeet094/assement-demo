@@ -36,7 +36,7 @@ This is a production-ready, cloud-native E-commerce platform built using a micro
 | Secrets       | Credentials Management          | AWS Secrets Manager         |
 | Ingress       | Routing and TLS Termination     | AWS ALB Ingress Controller  |
 
-
+![Project Diagram](screenshots/project-diagram.png)
 
 ### Communication Flow:
 
