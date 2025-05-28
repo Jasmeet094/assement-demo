@@ -13,6 +13,7 @@
 9. [Login to Grafana](#login-to-grafana)
 10. [Adding Loki to Grafana](#adding-loki-to-grafana)
 11. [Login to Kibana(Elasticsearch)](#login-to-kibanaelasticsearch)
+12. [Network Policies for Service-Level Security](#-network-policies-for-service-level-security)
 
 E-Commerce Microservices Application - Kubernetes Deployment
 
@@ -286,3 +287,49 @@ kubectl get secret grafana -n production -o jsonpath="{.data.admin-password}" | 
 * In this setup the elasticsearch is showing only 2 hosts metrics this is because currently the agent metricbeat is running on only Karpenter Main node-class nodes.
 
 ![Elasticsearch Monitoring](screenshots/elasticsearch.png)
+
+## Network Policies for Service-Level Security
+To enforce least privilege communication between microservices in the production namespace, we implemented a set of Kubernetes NetworkPolicies. These policies restrict ingress traffic to only the expected producers (senders) for each service, while denying all other inter-pod communication by default.
+
+This approach significantly enhances service isolation, reduces the blast radius in case of a compromise, and aligns with zero-trust network architecture principles.
+
+![Network Policies](screenshots/inter-communication.png)
+
+#### Applied Network Policies
+1.  **Gateway Policy**
+The gateway service is the primary entry point for frontend traffic. We allow ingress to it only from the frontend service on the expected application port (4000):
+
+```
+- Gateway accepts traffic from: `jobber-frontend`
+- Port allowed: 4000
+
+```
+
+2. **Notification Service**
+The Notification Service receives events from multiple other services. We allow ingress only from:
+```
+- Allowed producers: `jobber-auth`, `jobber-order`, `jobber-chat`, `jobber-gateway`
+
+```
+
+3. **Users Service**
+The Users Service is a critical dependency for many services. We restrict ingress to:
+
+```
+- Allowed producers: `jobber-auth`, `jobber-order`, `jobber-gig`, `jobber-review`, `jobber-gateway`
+
+```
+
+4. **Gig Service**
+The Gig Service only accepts requests from the Users Service and the Gateway:
+
+```
+- Allowed producers: `jobber-users`, `jobber-gateway`
+```
+
+5. **Order Service**
+The Order Service receives communication from the Review Service and API Gateway:
+
+```
+- Allowed producers: `jobber-review`, `jobber-gateway`
+```

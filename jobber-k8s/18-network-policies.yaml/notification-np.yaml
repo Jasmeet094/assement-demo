@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-auth-order-chat-gateway-to-notification
+  namespace: production
+spec:
+  podSelector:
+    matchLabels:
+      app: jobber-notification
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: jobber-auth
+        - podSelector:
+            matchLabels:
+              app: jobber-order
+        - podSelector:
+            matchLabels:
+              app: jobber-chat
+        - podSelector:
+            matchLabels:
+              app: jobber-gateway
