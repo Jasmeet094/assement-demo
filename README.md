@@ -6,7 +6,7 @@
 2. [Application Architecture](#-core-components)
 3. [Infrastructure Deployment (Terraform)](#infrastructure-deployment-using-terraform)
 4. [Terraform Structure with Remote State and Module Reuse](#terraform-structure-with-remote-state-and-module-reuse)
-5. [Cluster Autoscaler](#cluster-autoscaler---why-karpenter-was-used)
+5. [Cluster Autoscaler](#cluster-autoscaler---why-karpenter)
 6. [Deploy Resources Related to App](#deploy-resources-related-to-app)
 7. [Accessing the App](#accessing-the-app)
 8. [Observability in EKS Cluster](#observability-in-eks-cluster)
@@ -83,7 +83,7 @@ This setup ensures reproducibility, state isolation, and reliable cross-module r
 * This folder contans all the terraform files to deploy plugins.
 * ALB Ingress Controller, External-Dns, EBS-CSI, Grafana/Prometheus and Metrics Server.
 
-##  Cluster Autoscaler == > Why Karpenter Was Used ?
+## Cluster Autoscaler - Why Karpenter 
 Karpenter is an open-source, flexible, and high-performance Kubernetes cluster autoscaler built by AWS. In this setup, Karpenter is used instead of the traditional EKS Cluster Autoscaler due to its speed, flexibility, and efficiency.
 
 #### Benefits of Using Karpenter Over EKS Cluster Autoscaler:
