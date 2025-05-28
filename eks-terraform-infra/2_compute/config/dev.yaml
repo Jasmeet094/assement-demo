@@ -1,0 +1,35 @@
+region: "us-east-1"
+identifier: "eks-demo"
+aws_profile: "jasmeet"
+cluster_version: "1.32"
+
+cluster_addons: 
+  coredns                : {}
+  eks-pod-identity-agent : {}
+  kube-proxy             : {}
+  vpc-cni                : {}
+
+
+
+node_group:
+  default:
+    min_size: 3
+    max_size: 7
+    desired_size: 3
+    instance_types: ["t4g.medium"]
+    ami_type: AL2_ARM_64
+
+access_entries: 
+  admins:
+    principal_arn: "arn:aws:iam::307436399520:role/test-eks-admin-role"
+    type: "STANDARD"
+    kubernetes_groups: 
+      - admins
+    policy_associations:
+      cluster_admin:
+        policy_arn: "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+        access_scope:
+          type: "cluster"
+
+tags: 
+  demo: test

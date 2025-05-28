@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jobber-kibana
+  namespace: production
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jobber-kibana
+  template:
+    metadata:
+      labels:
+        app: jobber-kibana
+    spec:
+      serviceAccountName: jobber-secret-reader
+      containers:
+        - name: jobber-kibana
+          image: docker.elastic.co/kibana/kibana:8.11.0
+          resources:
+            limits:
+              memory: "1Gi"
+              cpu: "1500m"
+            requests:
+              cpu: 250m
+              memory: 1Gi
+          ports:
+          - name: jobber-kibana
+            containerPort: 5601
+          env:
+            - name: ELASTICSEARCH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: jobber-backend-secret
+                  key: kibana-elasticsearch-password   
+            - name: ELASTICSEARCH_USERNAME
+              value: kibana_system    
+            - name: ELASTICSEARCH_SERVICEACCOUNT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: jobber-backend-secret
+                  key: elasticsearch_service_account_token                    
+            - name: ELASTICSEARCH_HOSTS
+              # http://<service-name>.<namespace>.svc.cluster.local:<port-number>
+              value: http://jobber-elastic.production.svc.cluster.local:9200
+          volumeMounts:
+            - name: kibana-config
+              mountPath: /usr/share/kibana/config
+            - name: secrets-store
+              mountPath: /mnt/secrets-store
+              readOnly: true    
+      volumes:
+      - name: kibana-config
+        configMap:
+          name: kibana-config
+      - name: secrets-store
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: jobber-aws-secrets       

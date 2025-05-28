@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jobber-mysql
+  namespace: production
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jobber-mysql
+  template:
+    metadata:
+      labels:
+        app: jobber-mysql
+    spec:
+      serviceAccountName: jobber-secret-reader
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: jobber-mysql
+        image: mysql:8.0.35
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: jobber-backend-secret
+              key: MYSQL_ROOT_PASSWORD
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: jobber-backend-secret
+              key: MYSQL_PASSWORD
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: jobber-backend-secret
+              key: MYSQL_DATABASE
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: jobber-backend-secret
+              key: MYSQL_USER
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "0.5"
+          requests:
+            cpu: 100m
+            memory: 150Mi
+        ports:
+        - name: jobber-mysql
+          containerPort: 3306
+        volumeMounts:
+        - name: mysql-local-storage
+          mountPath: /var/lib/mysql
+          subPath: mysql
+        - name: secrets-store
+          mountPath: /mnt/secrets-store
+          readOnly: true   
+        readinessProbe:
+          exec:
+            command:
+              - sh
+              - -c
+              - |
+                mysql -h127.0.0.1 -u${MYSQL_USER} -p${MYSQL_PASSWORD} -e "SELECT 1"
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+
+        livenessProbe:
+          exec:
+            command:
+              - sh
+              - -c
+              - |
+                mysqladmin ping -u${MYSQL_USER} -p${MYSQL_PASSWORD}
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+      volumes:
+      - name: mysql-local-storage
+        persistentVolumeClaim:
+          claimName: mysql-pvc
+      - name: secrets-store
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: jobber-aws-secrets     
+

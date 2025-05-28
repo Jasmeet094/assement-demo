@@ -1,0 +1,6 @@
+region: "us-east-1"
+identifier: "eks-demo"
+aws_profile: "jasmeet"
+
+tags: 
+  demo: test
