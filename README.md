@@ -3,17 +3,19 @@
 
 ## 📚 Table of Contents
 1. [Overview](#atlan---assesment-e-commerce-app-on-aws-eks)
-2. [Application Architecture](#-core-components)
-3. [Infrastructure Deployment (Terraform)](#infrastructure-deployment-using-terraform)
-4. [Terraform Structure with Remote State and Module Reuse](#terraform-structure-with-remote-state-and-module-reuse)
-5. [Cluster Autoscaler](#cluster-autoscaler---why-karpenter)
-6. [Deploy Resources Related to App](#deploy-resources-related-to-app)
-7. [Accessing the App](#accessing-the-app)
-8. [Observability in EKS Cluster](#observability-in-eks-cluster)
-9. [Login to Grafana](#login-to-grafana)
-10. [Adding Loki to Grafana](#adding-loki-to-grafana)
-11. [Login to Kibana(Elasticsearch)](#login-to-kibanaelasticsearch)
-12. [Network Policies for Service-Level Security](#network-policies-for-service-level-security)
+2. [Folder Structure](#folder-structure)
+3. [Application Architecture](#-core-components)
+4. [Infrastructure Deployment (Terraform)](#infrastructure-deployment-using-terraform)
+5. [Terraform Structure with Remote State and Module Reuse](#terraform-structure-with-remote-state-and-module-reuse)
+6. [Cluster Autoscaler](#cluster-autoscaler---why-karpenter)
+7. [Deploy Resources Related to App](#deploy-resources-related-to-app)
+8. [Accessing the App](#accessing-the-app)
+9. [Observability in EKS Cluster](#observability-in-eks-cluster)
+10. [Login to Grafana](#login-to-grafana)
+11. [Adding Loki to Grafana](#adding-loki-to-grafana)
+12. [Login to Kibana(Elasticsearch)](#login-to-kibanaelasticsearch)
+13. [Network Policies for Service-Level Security](#network-policies-for-service-level-security)
+
 
 E-Commerce Microservices Application - Kubernetes Deployment
 
@@ -53,6 +55,9 @@ Logs from all pods ➔ Alloy ➔ Loki
 
 Metrics ➔ Prometheus ➔ Grafana Dashboards
 
+## Folder Structure
+* eks-terraform-infra  ---  Terraform modules for networking, EKS, and add-ons
+* jobber-k8s           ---  Kubernetes manifests for all microservices and resources
 
 ### Infrastructure Deployment Using Terraform:
 To ensure consistency across environments (dev, staging, production), the infrastructure is built using a modular Terraform architecture with environment-specific configuration managed via YAML files. Each module (like VPC, EKS, Karpenter) dynamically reads its values based on the active Terraform workspace using a shared locals block. This approach enables a single codebase to cleanly manage infrastructure across multiple AWS accounts or environments without duplication, while preserving clarity, reusability, and automation best practices.
