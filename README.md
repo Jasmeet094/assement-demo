@@ -6,7 +6,7 @@
 2. [Application Architecture](#-core-components)
 3. [Infrastructure Deployment (Terraform)](#infrastructure-deployment-using-terraform)
 4. [Terraform Structure with Remote State and Module Reuse](#terraform-structure-with-remote-state-and-module-reuse)
-5. [Cluster Autoscaler](#cluster-autoscaler--why-karpenter-was-used-)
+5. [Cluster Autoscaler](#cluster-autoscaler---why-karpenter-was-used)
 6. [Deploy Resources Related to App](#deploy-resources-related-to-app)
 7. [Accessing the App](#accessing-the-app)
 8. [Observability in EKS Cluster](#observability-in-eks-cluster)
