@@ -333,3 +333,13 @@ The Order Service receives communication from the Review Service and API Gateway
 ```
 - Allowed producers: `jobber-review`, `jobber-gateway`
 ```
+
+
+## Remove Infra and Resources:
+* Go to folder **jobber-k8s** and run kubectl delete -f for all resources.
+* Go to folder **eks-terraform-infra** and run terraform destroy in below order:
+```
+1. 3_plugins
+2. 2_compute 
+3. 1_network 
+```
