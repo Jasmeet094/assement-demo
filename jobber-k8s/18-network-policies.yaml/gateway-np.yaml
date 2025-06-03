@@ -14,6 +14,14 @@ spec:
         - podSelector:
             matchLabels:
               app: jobber-frontend
-      ports:
-        - protocol: TCP
-          port: 4000 
+        - podSelector:
+           matchLabels:
+             app.kubernetes.io/name: prometheus
+             app.kubernetes.io/component: server 
+        - podSelector:
+            matchLabels:
+              k8s-app: metricbeat   
+        - podSelector:
+            matchLabels:
+              k8s-app: heartbeat            
+

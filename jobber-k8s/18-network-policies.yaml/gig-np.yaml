@@ -16,4 +16,14 @@ spec:
               app: jobber-users
         - podSelector:
             matchLabels:
-              app: jobber-gateway      
+              app: jobber-gateway  
+        - podSelector:
+           matchLabels:
+             app.kubernetes.io/name: prometheus
+             app.kubernetes.io/component: server 
+        - podSelector:
+            matchLabels:
+              k8s-app: metricbeat   
+        - podSelector:
+            matchLabels:
+              k8s-app: heartbeat            
